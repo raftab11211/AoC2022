@@ -13,9 +13,10 @@ def get_priority(character):
 
 def get_overlaps(itemsFirst, itemsSecond):
     priority = 0
-    for key in itemsFirst:
-        if itemsSecond.get(key) is not None:
-            priority += get_priority(key)
+    for item_first in itemsFirst:
+        for item_second in itemsSecond:
+            if (item_first == item_second):
+                priority += get_priority(item_first)
 
     return priority
 
@@ -26,19 +27,15 @@ for line in file:
     line = line.replace("\n", "")
     first = line[0:(len(line) // 2)]
     second = line[len(line) // 2:len(line)]
-    itemsFirst = {}
-    itemsSecond = {}
+    itemsFirst = []
+    itemsSecond = []
     for char in list(first):
-        if itemsFirst.get(char) is not None:
-            itemsFirst[char]["count"] += 1
-        else:
-            itemsFirst[char] = {"count": 1}
+        if char not in itemsFirst:
+            itemsFirst.append(char)
 
     for char in list(second):
-        if itemsSecond.get(char) is not None:
-            itemsSecond[char]["count"] += 1
-        else:
-            itemsSecond[char] = {"count": 1}
+        if char not in itemsSecond:
+            itemsSecond.append(char)
 
     priority = get_overlaps(itemsFirst, itemsSecond)
     total_priorities += priority
